@@ -1,0 +1,114 @@
+RELATIONSHIPS
+One User → Many Orders (One-to-Many): A user can place multiple orders.
+
+Many Orders ←→ Many Products (Many-to-Many): An order can contain multiple products, and a product can belong to multiple orders. (This will require an association table.)
+
+Configure App with Database URI
+
+Update the SQLAlchemy URI in your app.py file:
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:<YOUR PASSWORD>@localhost/ecommerce_api'
+
+
+
+
+🗃 DATABASE MODELS
+Create the following tables in SQLAlchemy:
+
+User Table
+id: Integer, primary key, auto-increment
+name: String
+address: String
+email: String (must be unique)
+
+
+Order Table
+id: Integer, primary key, auto-increment
+order_date: DateTime (learn to use DateTime in SQLAlchemy)
+user_id: Integer, foreign key referencing User
+
+
+Product Table
+id: Integer, primary key, auto-increment
+product_name: String
+price: Float
+
+
+Order_Product Association Table
+order_id: Integer, foreign key referencing Order
+product_id: Integer, foreign key referencing Product
+
+
+Ensure this association table prevents duplicate entries for the same product in an order.
+
+
+
+
+
+
+
+📦 MARSHMALLOW SCHEMAS
+Implement the following Marshmallow schemas for serialization and validation:
+
+UserSchema
+
+OrderSchema
+
+
+
+IMPORTANT: SQLAlchemyAutoSchemas do not automatically recognize Foreign Keys as schema fields, and won’t recognize user_id.
+
+To include user_id as part of the schema you must add include_fk = True as a property in the Meta subclass under the model attribute.
+
+
+
+ProductSchema
+
+Include appropriate fields and validation for each schema.
+
+
+
+🚀 IMPLEMENT CRUD ENDPOINTS
+Develop the following RESTful endpoints:
+
+
+
+User Endpoints
+
+GET /users: Retrieve all users
+
+GET /users/<id>: Retrieve a user by ID
+
+POST /users: Create a new user
+
+PUT /users/<id>: Update a user by ID
+
+DELETE /users/<id>: Delete a user by ID
+
+
+
+Product Endpoints
+
+GET /products: Retrieve all products
+
+GET /products/<id>: Retrieve a product by ID
+
+POST /products: Create a new product
+
+PUT /products/<id>: Update a product by ID
+
+DELETE /products/<id>: Delete a product by ID
+
+
+
+Order Endpoints
+
+POST /orders: Create a new order (requires user ID and order date)
+
+PUT /orders/<order_id>/add_product/<product_id>: Add a product to an order (prevent duplicates)
+
+DELETE /orders/<order_id>/remove_product/<product_id>: Remove a product from an order
+
+GET /orders/user/<user_id>: Get all orders for a user
+
+GET /orders/<order_id>/products: Get all products for an order

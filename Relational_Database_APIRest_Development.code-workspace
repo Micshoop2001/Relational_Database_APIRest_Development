@@ -1,0 +1,14 @@
+{
+  "folders": [
+	{
+		"path": "."
+	},
+	{
+		"path": "../BuildingRestfulAPIs"
+	},
+	{
+		"path": "../Hands_on_relational_databases"
+	}
+],
+  "settings": {}
+}
